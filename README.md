@@ -66,3 +66,9 @@ git push -u origin main
 ## Important scope note
 
 The initial browser experience keeps a lightweight local attempt mirror so it remains usable even while a preview database is cold. The server has the typed tRPC procedures and normalized database tables for production persistence; the next hardening step for a multi-device deployment is to connect the candidate UI submission and admin tables directly to those procedures for cross-browser synchronization.
+
+## Expanded sourced question bank
+
+The question bank now includes original, source-labeled syllabus-pattern MCQs based on verified Karnataka revenue-administration and recruitment material from 2021–2025, alongside Karnataka, India, and world current affairs published in 2025–2026. It also adds Karnataka history, Kannada, English, reasoning, computer/technology, science, polity, welfare schemes, budgets, space, health, and governance coverage.
+
+Exact official VAO question papers were not publicly verifiable for every year. The app therefore does **not** falsely attribute reconstructed questions to a specific exam paper: these entries are labeled as “syllabus-pattern” or “current affairs” in their source text. Scanned or incomplete source material should still be manually reviewed in the admin workspace.

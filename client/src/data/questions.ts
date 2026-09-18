@@ -1,4 +1,4 @@
-export type Subject = "Village Administration" | "Indian Polity" | "Karnataka History" | "Aptitude" | "General Knowledge";
+export type Subject = "Village Administration" | "Indian Polity" | "Karnataka History" | "Aptitude" | "General Knowledge" | "Computer/Technology" | "English" | "Kannada" | "Reasoning";
 export type Option = "A" | "B" | "C" | "D";
 
 export type PracticeQuestion = {
@@ -11,6 +11,8 @@ export type PracticeQuestion = {
   source: string;
   page?: number;
 };
+
+import { expandedQuestions } from "./researchedQuestions";
 
 export const sampleQuestions: PracticeQuestion[] = [
   { id: 1, subject: "Village Administration", prompt: "Which local body is the basic unit of rural local self-government in Karnataka?", options: { A: "Zilla Panchayat", B: "Taluk Panchayat", C: "Gram Panchayat", D: "Municipal Council" }, answer: "C", explanation: "The Gram Panchayat is the village-level institution in the three-tier Panchayat Raj system.", source: "Karnataka VAO Sample Set — Village Administration", page: 1 },
@@ -43,6 +45,7 @@ export const sampleQuestions: PracticeQuestion[] = [
   { id: 28, subject: "Karnataka History", prompt: "The Gol Gumbaz is located in:", options: { A: "Vijayapura", B: "Hassan", C: "Udupi", D: "Kolar" }, answer: "A", explanation: "Gol Gumbaz, the mausoleum of Mohammed Adil Shah, is in Vijayapura.", source: "Karnataka VAO Sample Set — Karnataka History", page: 6 },
   { id: 29, subject: "Aptitude", prompt: "If 5 workers finish a task in 12 days, how many worker-days does the task require?", options: { A: "17", B: "50", C: "60", D: "72" }, answer: "C", explanation: "Worker-days = 5 × 12 = 60.", source: "Karnataka VAO Sample Set — Aptitude", page: 6 },
   { id: 30, subject: "General Knowledge", prompt: "Which language is the official language of Karnataka?", options: { A: "Kannada", B: "Hindi", C: "Tulu", D: "English" }, answer: "A", explanation: "Kannada is the official language of the state of Karnataka.", source: "Karnataka VAO Sample Set — General Knowledge", page: 6 },
+  ...expandedQuestions,
 ];
 
 export const subjects: Array<{ label: string; value: Subject | "all" }> = [
@@ -52,4 +55,8 @@ export const subjects: Array<{ label: string; value: Subject | "all" }> = [
   { label: "Karnataka History", value: "Karnataka History" },
   { label: "Aptitude", value: "Aptitude" },
   { label: "General Knowledge", value: "General Knowledge" },
+  { label: "Computer / Technology", value: "Computer/Technology" },
+  { label: "English", value: "English" },
+  { label: "Kannada", value: "Kannada" },
+  { label: "Reasoning", value: "Reasoning" },
 ];

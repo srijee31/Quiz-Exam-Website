@@ -115,7 +115,7 @@ function HomeScreen({ onStart, onAdmin }: { onStart: (size: number, name: string
                 <div className="grid gap-2"><Label htmlFor="candidate-email">Student ID / Gmail address</Label><Input id="candidate-email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@gmail.com" className="h-11 bg-white" /><p className="text-xs text-[#68736f]">Used only to identify this attempt — no inbox access.</p></div>
                 <div className="grid gap-2"><Label>Choose test length</Label><div className="grid grid-cols-4 gap-2">{sizes.map((value) => <button key={value} onClick={() => setSize(value)} className={`rounded-xl border px-2 py-3 text-center transition ${size === value ? "border-[#d08b24] bg-[#f4ebdd] text-[#765020] shadow-sm" : "border-[#e5e0d4] bg-white text-[#68736f] hover:border-[#d0c4ae]"}`}><span className="block text-lg font-bold">{value}</span><span className="text-[10px] uppercase tracking-wide">questions</span></button>)}</div></div>
                 <Button onClick={begin} className="h-12 w-full bg-[#d08b24] font-bold text-[#173b5c] shadow-lg hover:bg-[#e2a03a]">Begin practice <ArrowRight className="ml-2 h-4 w-4" /></Button>
-                <p className="text-center text-xs text-[#68736f]">Questions are mixed across all five VAO subjects.</p>
+                <p className="text-center text-xs text-[#68736f]">Questions are mixed across nine VAO preparation categories.</p>
               </CardContent>
             </Card>
           </div>
