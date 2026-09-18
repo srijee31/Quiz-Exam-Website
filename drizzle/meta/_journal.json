@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1789753133556,
+      "tag": "0000_curved_pet_avengers",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1789753194856,
+      "tag": "0001_yellow_ultron",
+      "breakpoints": true
+    }
+  ]
+}

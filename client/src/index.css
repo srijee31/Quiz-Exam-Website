@@ -1,0 +1,127 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --primary: #173b5c;
+  --primary-foreground: #f7f3e9;
+  --sidebar-primary: #d08b24;
+  --sidebar-primary-foreground: #fffaf0;
+  --chart-1: #2e7d67;
+  --chart-2: #d08b24;
+  --chart-3: #173b5c;
+  --chart-4: #b9513e;
+  --chart-5: #7a5d39;
+  --radius: 0.8rem;
+  --background: #f8f5ee;
+  --foreground: #1b252c;
+  --card: #fffdf8;
+  --card-foreground: #1b252c;
+  --popover: #fffdf8;
+  --popover-foreground: #1b252c;
+  --secondary: #eef2ef;
+  --secondary-foreground: #26473b;
+  --muted: #f0eee7;
+  --muted-foreground: #68736f;
+  --accent: #f5ead7;
+  --accent-foreground: #543b1d;
+  --destructive: #b9513e;
+  --destructive-foreground: #fff8f4;
+  --border: #e5e0d4;
+  --input: #ddd8ca;
+  --ring: #d08b24;
+  --sidebar: #173b5c;
+  --sidebar-foreground: #f5f1e8;
+  --sidebar-accent: #234b70;
+  --sidebar-accent-foreground: #fffaf0;
+  --sidebar-border: #315776;
+  --sidebar-ring: #d08b24;
+}
+
+.dark {
+  --background: #16242d;
+  --foreground: #edf3ec;
+  --card: #1e3038;
+  --card-foreground: #edf3ec;
+  --popover: #1e3038;
+  --popover-foreground: #edf3ec;
+  --secondary: #29413d;
+  --secondary-foreground: #eef7e9;
+  --muted: #2a3b41;
+  --muted-foreground: #b7c3bd;
+  --accent: #4f412f;
+  --accent-foreground: #fff4dd;
+  --border: #35505a;
+  --input: #405761;
+  --primary: #d8a354;
+  --primary-foreground: #1a2830;
+  --sidebar: #102a41;
+  --sidebar-foreground: #eef7e9;
+  --sidebar-accent: #1c4262;
+  --sidebar-accent-foreground: #fffaf0;
+  --sidebar-border: #2e526d;
+}
+
+@layer base {
+  * { @apply border-border outline-ring/50; }
+  body { @apply bg-background text-foreground; font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif; }
+  button:not(:disabled), [role="button"]:not([aria-disabled="true"]), [type="button"]:not(:disabled), [type="submit"]:not(:disabled), a[href], select:not(:disabled), input[type="checkbox"]:not(:disabled), input[type="radio"]:not(:disabled) { @apply cursor-pointer; }
+}
+
+@layer components {
+  .container { width: 100%; margin-left: auto; margin-right: auto; padding-left: 1rem; padding-right: 1rem; }
+  .flex { min-height: 0; min-width: 0; }
+  @media (min-width: 640px) { .container { padding-left: 1.5rem; padding-right: 1.5rem; } }
+  @media (min-width: 1024px) { .container { padding-left: 2rem; padding-right: 2rem; max-width: 1280px; } }
+}
+
+html { scroll-behavior: smooth; }
+::selection { background: #f0c77f; color: #173b5c; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .rise-in { animation: rise-in 480ms cubic-bezier(.23,1,.32,1) both; }
+  .delay-1 { animation-delay: 80ms; }
+  .delay-2 { animation-delay: 160ms; }
+  .delay-3 { animation-delay: 240ms; }
+}
+@keyframes rise-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
