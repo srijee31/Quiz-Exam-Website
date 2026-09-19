@@ -196,9 +196,23 @@ function AdminScreen({ onLogout, credentials }: { onLogout: () => void; credenti
   const [questions, setQuestions] = useState(sampleQuestions);
   const [attempts, setAttempts] = useState<AttemptRecord[]>(() => JSON.parse(localStorage.getItem("vao_attempts") || "[]"));
   const [search, setSearch] = useState(""); const [filter, setFilter] = useState<Subject | "all">("all"); const [text, setText] = useState(""); const [fileName, setFileName] = useState("");
-  const ingestText = trpc.admin.ingestText.useMutation({ onSuccess: (data) => toast.success(`${data.count} question${data.count === 1 ? "" : "s"} saved to the server question bank.`), onError: (error) => toast.error(error.message) });
+  const serverQuestionBank = trpc.admin.questionBank.useQuery(credentials, { refetchInterval: 15000 });
+  const ingestText = trpc.admin.ingestText.useMutation({ onSuccess: async (data) => { await serverQuestionBank.refetch(); toast.success(`${data.count} question${data.count === 1 ? "" : "s"} saved to the server question bank.`); }, onError: (error) => toast.error(error.message) });
   const uploadPdf = trpc.admin.uploadPdf.useMutation({ onSuccess: (data) => toast.success(`${data.fileName} uploaded and saved for manual review.`), onError: (error) => toast.error(error.message) });
   const serverAttempts = trpc.admin.attempts.useQuery(credentials, { refetchInterval: 15000 });
+  useEffect(() => {
+    if (!serverQuestionBank.data) return;
+    setQuestions(serverQuestionBank.data.map((item) => ({
+      id: item.id,
+      subject: item.subject as Subject,
+      prompt: item.prompt,
+      options: { A: item.optionA, B: item.optionB, C: item.optionC, D: item.optionD },
+      answer: item.correctOption as Option,
+      explanation: item.explanation,
+      source: "Server question bank",
+      page: item.sourcePage ?? undefined,
+    })));
+  }, [serverQuestionBank.data]);
   useEffect(() => { if (serverAttempts.data) setAttempts(serverAttempts.data.map((attempt) => ({ id: String(attempt.id), candidateName: attempt.candidateName, candidateEmail: attempt.candidateEmail, date: new Date(attempt.startedAt).toISOString(), quizSize: attempt.quizSize, score: attempt.score, accuracy: attempt.accuracy, timeTaken: formatTime(attempt.timeTakenSeconds), questions: [], answers: {} }))); }, [serverAttempts.data]);
   const filtered = useMemo(() => questions.filter((question) => (filter === "all" || question.subject === filter) && (!search || `${question.prompt} ${question.explanation}`.toLowerCase().includes(search.toLowerCase()))), [questions, search, filter]);
   const addPastedQuestions = () => {
