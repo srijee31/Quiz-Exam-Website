@@ -43,22 +43,25 @@ function requireAdmin(id: string, password: string) {
 }
 
 function parsePastedQuestions(text: string) {
-  const blocks = text.split(/\n\s*\n/).map((block) => block.trim()).filter(Boolean);
+  const normalized = text.replace(/\r/g, "").trim();
+  const blocks = normalized.split(/\n\s*(?=Q\s*\d*\s*[:.)-])/i).map((block) => block.trim()).filter(Boolean);
   return blocks.flatMap((block) => {
     const lines = block.split("\n").map((line) => line.trim()).filter(Boolean);
-    const prompt = lines.find((line) => /^q\d*[:.)]/i.test(line))?.replace(/^q\d*[:.)]\s*/i, "") ?? lines[0];
-    const optionLines = lines.filter((line) => /^[ABCD][.)]\s+/i.test(line));
-    const options = optionLines.map((line) => line.replace(/^[ABCD][.)]\s+/i, ""));
-    const answerLine = lines.find((line) => /^(answer|ans|correct)[:.)]?/i.test(line));
-    const explanationLine = lines.find((line) => /^explanation[:.)]?/i.test(line));
-    const correct = answerLine?.match(/[ABCD]/i)?.[0]?.toUpperCase() as "A" | "B" | "C" | "D" | undefined;
+    const prompt = lines.find((line) => /^q\s*\d*\s*[:.)-]/i.test(line))?.replace(/^q\s*\d*\s*[:.)-]\s*/i, "") ?? lines[0];
+    const optionLines = lines.filter((line) => /^[ABCD]\s*[:.)-]\s*/i.test(line));
+    const options = optionLines.map((line) => line.replace(/^[ABCD]\s*[:.)-]\s*/i, ""));
+    const answerIndex = lines.findIndex((line) => /^(answer|ans|correct)\s*[:.)-]?\s*[ABCD]\b/i.test(line));
+    const answerLine = answerIndex >= 0 ? lines[answerIndex] : "";
+    const explanationIndex = lines.findIndex((line) => /^explanation\s*[:.)-]/i.test(line));
+    const explanationLine = explanationIndex >= 0 ? lines.slice(explanationIndex).join(" ").replace(/^explanation\s*[:.)-]\s*/i, "") : "";
+    const correct = answerLine.replace(/^(answer|ans|correct)\s*[:.)-]?\s*/i, "").match(/^[ABCD]\b/i)?.[0]?.toUpperCase() as "A" | "B" | "C" | "D" | undefined;
     if (!prompt || options.length < 4 || !correct) return [];
     return [{
       subject: "General Knowledge",
       prompt,
       optionA: options[0], optionB: options[1], optionC: options[2], optionD: options[3],
       correctOption: correct,
-      explanation: explanationLine?.replace(/^explanation[:.)]?\s*/i, "") ?? "Review the source material and confirm the reasoning behind this answer.",
+      explanation: explanationLine || "Review the source material and confirm the reasoning behind this answer.",
     }];
   });
 }

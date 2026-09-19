@@ -202,12 +202,15 @@ function AdminScreen({ onLogout, credentials }: { onLogout: () => void; credenti
   useEffect(() => { if (serverAttempts.data) setAttempts(serverAttempts.data.map((attempt) => ({ id: String(attempt.id), candidateName: attempt.candidateName, candidateEmail: attempt.candidateEmail, date: new Date(attempt.startedAt).toISOString(), quizSize: attempt.quizSize, score: attempt.score, accuracy: attempt.accuracy, timeTaken: formatTime(attempt.timeTakenSeconds), questions: [], answers: {} }))); }, [serverAttempts.data]);
   const filtered = useMemo(() => questions.filter((question) => (filter === "all" || question.subject === filter) && (!search || `${question.prompt} ${question.explanation}`.toLowerCase().includes(search.toLowerCase()))), [questions, search, filter]);
   const addPastedQuestions = () => {
-    const extracted: PracticeQuestion[] = text.split(/\n\s*\n/).map((block, index) => {
+    const normalized = text.replace(/\r/g, "").trim();
+    const extracted: PracticeQuestion[] = normalized.split(/\n\s*(?=Q\s*\d*\s*[:.)-])/i).map((block, index) => {
       const lines = block.trim().split("\n").map((line) => line.trim()).filter(Boolean);
-      const prompt = lines.find((line) => /^q\d*[:.)]/i.test(line))?.replace(/^q\d*[:.)]\s*/i, "") || lines[0];
-      const options = lines.filter((line) => /^[ABCD][.)]\s+/i.test(line)).map((line) => line.replace(/^[ABCD][.)]\s+/i, ""));
-      const answer = lines.find((line) => /^(answer|ans|correct)[:.)]?/i.test(line))?.match(/[ABCD]/i)?.[0]?.toUpperCase() as Option | undefined;
-      const explanation = lines.find((line) => /^explanation[:.)]?/i.test(line))?.replace(/^explanation[:.)]?\s*/i, "") || "Review the source material and confirm the reasoning behind this answer.";
+      const prompt = lines.find((line) => /^q\s*\d*\s*[:.)-]/i.test(line))?.replace(/^q\s*\d*\s*[:.)-]\s*/i, "") || lines[0];
+      const options = lines.filter((line) => /^[ABCD]\s*[:.)-]\s*/i.test(line)).map((line) => line.replace(/^[ABCD]\s*[:.)-]\s*/i, ""));
+      const answerLine = lines.find((line) => /^(answer|ans|correct)\s*[:.)-]?\s*[ABCD]\b/i.test(line));
+      const answer = answerLine?.replace(/^(answer|ans|correct)\s*[:.)-]?\s*/i, "").match(/^[ABCD]\b/i)?.[0]?.toUpperCase() as Option | undefined;
+      const explanationIndex = lines.findIndex((line) => /^explanation\s*[:.)-]/i.test(line));
+      const explanation = explanationIndex >= 0 ? lines.slice(explanationIndex).join(" ").replace(/^explanation\s*[:.)-]\s*/i, "") : "Review the source material and confirm the reasoning behind this answer.";
       if (!prompt || options.length < 4 || !answer) return null;
       return { id: Date.now() + index, subject: "General Knowledge" as Subject, prompt, options: { A: options[0], B: options[1], C: options[2], D: options[3] }, answer, explanation, source: fileName || "Admin pasted question set" };
     }).filter((question): question is PracticeQuestion => Boolean(question));
