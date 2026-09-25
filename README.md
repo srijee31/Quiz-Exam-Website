@@ -1,4 +1,4 @@
-# Karnataka VAO Exam Practice
+# Karnataka VAO Exam Practice [URL : https://vaoexam-exhftghe.manus.space]
 
 A responsive, full-stack practice desk for the Karnataka Village Administrative Officer exam. Candidates can enter a name and Gmail-based student ID, choose a 25/50/75/100-question mixed set, work against a one-minute-per-question timer, navigate with the question palette, flag questions, and review explanations and source references after submission.
 
